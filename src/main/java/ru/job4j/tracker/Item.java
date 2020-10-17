@@ -20,6 +20,13 @@ import java.time.LocalDateTime;
  *     }
  *     public Item(String name) {
  *     }
+ *
+ *     2.7. toString
+ *     Метод toString() служит, чтобы код можно было переиспользовать и не думать о том,
+ *     как выводить строковое представление объектов,
+ *     определен в классе  Object, наследниками которого по умолчанию являются все классы в Java.
+ *     Для того чтобы этот метод использовать в своих классах,
+ *     необходимо использовать механизм переопределения.
  */
 
 public class Item {
@@ -50,7 +57,18 @@ public class Item {
     public Item() {
     }
     public Item(int id){
+        this.id = id;
     }
     public Item(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

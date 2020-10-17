@@ -17,8 +17,12 @@ import java.time.format.DateTimeFormatter;
 public class StartUI {
 
     public static void main(String[] args) {
-        Item item = new Item();
+        Item item = new Item( 5, "Anna");;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMMM-EEEE-yyyy HH:mm:ss");
         System.out.println(item.getCreated().format(formatter));
+        System.out.println("User: id "
+                + item.getId() + " , name: "
+                + item.getName()
+        );
     }
 }
