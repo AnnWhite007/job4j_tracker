@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * 2.1. Реализация класса StartUI
- * Консольное приложение для работы с классом ru.job4j.tracker.Tracker.
+ * Консольное приложение для работы с классом ru.job4j.tracker.MemTracker.
  * Вместо вызова scanner.nextLine() - input.askStr(msg), где msg - это сообщение,
  * которое вы хотели бы вывести пользователю перед его вводом
  * 4.2. Статические методы.
@@ -32,7 +32,7 @@ public class StartUI {
      * Получение данных из списка.
      * У полученного объекта вызываем метод execute с передачей параметров input и tracker.
      */
-    public void init(Input input, Tracker tracker, List<UserAction> actions) {
+    public void init(Input input, Store store, List<UserAction> actions) {
         boolean run = true;
         while (run) {
             this.showMenu(actions);
@@ -42,11 +42,13 @@ public class StartUI {
                 continue;
             }
             UserAction action = actions.get(select);
-            run = action.execute(input, tracker);
+            run = action.execute(input, store);
         }
     }
 
-    /** Отвечает за вывод пунктов меню */
+    /**
+     * Отвечает за вывод пунктов меню
+     */
     private void showMenu(List<UserAction> actions) {
         out.println("Menu.");
         int index = 0;
@@ -56,20 +58,27 @@ public class StartUI {
         }
     }
 
-    /**  При запуске пользователю отображается меню в консоли.
-     * Создаем список с действиями. */
+    /**
+     * При запуске пользователю отображается меню в консоли.
+     * Создаем список с действиями.
+     */
     public static void main(String[] args) {
         Output output = new ConsoleOutput();
         Input input = new ValidateInput(output, new ConsoleInput());
-        Tracker tracker = new Tracker();
-        List<UserAction> actions = new ArrayList<>();
-                actions.add(new CreateAction(output));
-                actions.add(new ShowAllAction(output));
-                actions.add(new ReplaceItemAction(output));
-                actions.add(new DeleteItemAction(output));
-                actions.add(new FindItemByIdAction(output));
-                actions.add(new FindItemByNameAction(output));
-                actions.add(new ExitAction());
-        new StartUI(output).init(input, tracker, actions);
+        try (SqlTracker tracker = new SqlTracker()) {
+            tracker.init();
+            List<UserAction> actions = List.of(
+                    new CreateAction(output),
+                    new ShowAllAction(output),
+                    new ReplaceItemAction(output),
+                    new DeleteItemAction(output),
+                    new FindItemByIdAction(output),
+                    new FindItemByNameAction(output),
+                    new ExitAction()
+            );
+            new StartUI(output).init(input, tracker, actions);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

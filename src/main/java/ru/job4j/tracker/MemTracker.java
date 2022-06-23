@@ -5,9 +5,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * 5. Tracker - хранилище.
- * 6. Метод замены заявки. Tracker.replace
- * 7. Метод удаления заявки Tracker.delete
+ * 5. MemTracker - хранилище(данные хранятся в памяти).
+ * 6. Метод замены заявки. MemTracker.replace
+ * 7. Метод удаления заявки MemTracker.delete
  * Метод public Item add(Item item) добавляет заявку,
  * переданную в аргументах в массив заявок items.
  * Метод public Item findById(int id) проверяет в цикле все элементы массива items,
@@ -34,12 +34,14 @@ import java.util.List;
  * - это проверка параметров метода. Если параметры не верные, то выполнить метод нельзя.
  */
 
-public class Tracker {
+public class MemTracker implements Store {
+
     private final List<Item> items = new ArrayList<>();
     /** Поле для генерации нового ключа, представляет собой последовательность. */
     private  int ids = 1;
 
     /** Добавление заявок */
+    @Override
     public Item add(Item item) {
         item.setId(ids++);
         items.add(item);
@@ -48,6 +50,7 @@ public class Tracker {
 
     /** Получение заявки по id, возвращает объект Item.
      * Если индекс найден возвращаем item, иначе null. */
+    @Override
     public Item findById(int id) {
         int index = indexOf(id);
         return index != -1 ? items.get(index) : null;
@@ -55,11 +58,13 @@ public class Tracker {
 
     /** Получение списка всех заявок.
      * @return возвращаем копию списка */
+    @Override
     public List<Item> findAll() {
         return List.copyOf(items);
     }
 
     /** Получение списка по имени. */
+    @Override
     public List<Item> findByName(String key) {
         List<Item> sameName = new ArrayList<>();
         for (Item value : items) {
@@ -83,6 +88,7 @@ public class Tracker {
     }
 
     /** Замена заявки + валидация. */
+    @Override
     public boolean replace(int id, Item item) {
         int index = indexOf(id);
         boolean rsl = index != -1;
@@ -94,6 +100,7 @@ public class Tracker {
     }
     /** Удаление элемента из массива и перемещение всех ячеек справа на одну позицию + валидация
      * Элементы, следующие после удалённого элемента, сдвигаются влево, а размер списочного массива уменьшается на единицу */
+    @Override
     public boolean delete(int id) {
         int index = indexOf(id);
         boolean rsl = index != -1;

@@ -9,11 +9,11 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
-public class TrackerTest {
+public class MemTrackerTest {
 
     @Test
     public void whenReplace() {
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Item bug = new Item("Bug");
         tracker.add(bug);
         int id = bug.getId();
@@ -25,7 +25,7 @@ public class TrackerTest {
     }
     @Test
     public void whenDelete() {
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Item bug = new Item("Bug");
         tracker.add(bug);
         int id = bug.getId();
@@ -34,7 +34,7 @@ public class TrackerTest {
     }
     @Test
     public void whenSort() {
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Item item1 = tracker.add(new Item("N"));
         Item item2 = tracker.add(new Item("A"));
         Item item3 = tracker.add(new Item("B"));
@@ -43,7 +43,7 @@ public class TrackerTest {
 }
     @Test
     public void whenSortReverse() {
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Item item1 = tracker.add(new Item("N"));
         Item item2 = tracker.add(new Item("A"));
         Item item3 = tracker.add(new Item("B"));

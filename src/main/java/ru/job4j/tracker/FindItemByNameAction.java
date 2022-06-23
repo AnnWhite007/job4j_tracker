@@ -15,10 +15,10 @@ public class FindItemByNameAction implements UserAction {
     }
 
     @Override
-    public boolean execute(Input input, Tracker tracker) {
+    public boolean execute(Input input, Store store) {
         out.println("=== Write search name ====");
         String findName = input.askStr("search name: ");
-        List<Item> listFindName = tracker.findByName(findName);
+        List<Item> listFindName = store.findByName(findName);
         if (listFindName.size() == 0) {
             out.println("=== Applications with this name was not found ====");
         } else {

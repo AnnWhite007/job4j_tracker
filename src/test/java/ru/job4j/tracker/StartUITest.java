@@ -11,6 +11,8 @@ package ru.job4j.tracker;
 
 import org.junit.Test;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class StartUITest {
     @Test
     public void whenReplaceItem() {
         Output out = new StubOutput();
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Item item = tracker.add(new Item("Replaced item"));
         String replacedName = "New item name";
         Input in = new StubInput(
@@ -49,7 +51,7 @@ public class StartUITest {
     @Test
     public void whenDeleteItem() {
         Output out = new StubOutput();
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Item item = tracker.add(new Item("Deleted item"));
         Input in = new StubInput(
                 new String[] {"0", String.valueOf(item.getId()), "1"}
@@ -67,7 +69,7 @@ public class StartUITest {
      * 1 - это пункт меню "Выйти".
      * Показать меню
      * Выбрать пункт "Создание заявки", Выбрать пункт "Выйти"
-     * Проверить, что в объект Tracker появилась новая заявка с именем "Item name"
+     * Проверить, что в объект MemTracker появилась новая заявка с именем "Item name"
      */
     @Test
     public void whenCreateItem() {
@@ -75,7 +77,7 @@ public class StartUITest {
         Input in = new StubInput(
                 new String[] {"0", "Item name", "1"}
         );
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         List<UserAction> actions = new ArrayList<>();
                 actions.add(new CreateAction(out));
                 actions.add(new ExitAction());
@@ -93,7 +95,7 @@ public class StartUITest {
     @Test
     public void whenFindAllAction() {
         Output out = new StubOutput();
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         tracker.add(new Item("first item"));
         tracker.add(new Item("second item"));
         tracker.add(new Item("third item"));
@@ -107,9 +109,9 @@ public class StartUITest {
         assertThat(out.toString(), is("Menu." + System.lineSeparator()
                 + "0. Show all items" + System.lineSeparator()
                 + "1. Exit Program" + System.lineSeparator()
-                + "id: 1, name: first item" + System.lineSeparator()
-                + "id: 2, name: second item" + System.lineSeparator()
-                + "id: 3, name: third item" + System.lineSeparator()
+                + "id: 1, name: first item, created: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + System.lineSeparator()
+                + "id: 2, name: second item, created: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + System.lineSeparator()
+                + "id: 3, name: third item, created: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + System.lineSeparator()
                 + "Menu." + System.lineSeparator()
                 + "0. Show all items" + System.lineSeparator()
                 + "1. Exit Program" + System.lineSeparator()
@@ -126,7 +128,7 @@ public class StartUITest {
     @Test
     public void whenFindByNameAction() {
         Output out = new StubOutput();
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         tracker.add(new Item("first item"));
         tracker.add(new Item("second item"));
         tracker.add(new Item("second item"));
@@ -141,8 +143,8 @@ public class StartUITest {
                 + "0. Find items by name" + System.lineSeparator()
                 + "1. Exit Program" + System.lineSeparator()
                 + "=== Write search name ====" + System.lineSeparator()
-                + "id: 2, name: second item" + System.lineSeparator()
-                + "id: 3, name: second item" + System.lineSeparator()
+                + "id: 2, name: second item, created: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + System.lineSeparator()
+                + "id: 3, name: second item, created: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + System.lineSeparator()
                 + "Menu." + System.lineSeparator()
                 + "0. Find items by name" + System.lineSeparator()
                 + "1. Exit Program" + System.lineSeparator()
@@ -159,7 +161,7 @@ public class StartUITest {
     @Test
     public void whenFindByIdAction() {
         Output out = new StubOutput();
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         tracker.add(new Item("third item"));
         tracker.add(new Item("fourth item"));
         Input in = new StubInput(
@@ -173,7 +175,7 @@ public class StartUITest {
                 + "0. Find item by Id" + System.lineSeparator()
                 + "1. Exit Program" + System.lineSeparator()
                 + "=== Write id ====" + System.lineSeparator()
-                + "id: 2, name: fourth item" + System.lineSeparator()
+                + "id: 2, name: fourth item, created: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + System.lineSeparator()
                 + "Menu." + System.lineSeparator()
                 + "0. Find item by Id" + System.lineSeparator()
                 + "1. Exit Program" + System.lineSeparator()
@@ -186,7 +188,7 @@ public class StartUITest {
         Input in = new StubInput(
                 new String[] {"0"}
         );
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         List<UserAction> actions = new ArrayList<>();
                 actions.add(new ExitAction());
         new StartUI(out).init(in, tracker, actions);
@@ -201,7 +203,7 @@ public class StartUITest {
         Input in = new StubInput(
                 new String[] {"5", "0" }
         );
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         List<UserAction> actions = new ArrayList<>();
                 actions.add(new ExitAction());
         new StartUI(out).init(in, tracker, actions);

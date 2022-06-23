@@ -3,7 +3,7 @@ package ru.job4j.tracker;
 import java.util.List;
 
 public class SingleTracker {
-    private Tracker tracker = new Tracker();
+    private MemTracker tracker = new MemTracker();
 
     /* реализовать singleton */
     private static SingleTracker instance = null;
@@ -24,7 +24,7 @@ public class SingleTracker {
     public Item findById(int id) {
         return tracker.findById(id);
     }
-    /* Остальные методы из класса Tracker. */
+    /* Остальные методы из класса MemTracker. */
     public List<Item> findAll() {
         return tracker.findAll();
     }

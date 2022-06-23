@@ -13,10 +13,10 @@ public class DeleteItemAction implements UserAction {
     }
 
     @Override
-    public boolean execute(Input input, Tracker tracker) {
+    public boolean execute(Input input, Store store) {
         out.println("=== Write id ====");
         int id = input.askInt("id: ");
-        if (tracker.delete(id)) {
+        if (store.delete(id)) {
             out.println("=== Successfully ====");
         } else {
             out.println("=== Error ====");
