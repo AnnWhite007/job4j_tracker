@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 import static org.hamcrest.Matchers.is;
@@ -94,7 +95,7 @@ public class SqlTrackerTest {
         Item item1 = tracker.add(new Item("item1"));
         Item item2 = tracker.add(new Item("item2"));
         Item item3 = tracker.add(new Item("item2"));
-        assertThat(tracker.findByName("item2"), is(Arrays.asList(new Object[]{item2, item3})));
+        assertThat(tracker.findByName("item2"), is(List.of(item2, item3)));
     }
 
     @Test
@@ -103,7 +104,7 @@ public class SqlTrackerTest {
         Item item1 = tracker.add(new Item("item1"));
         Item item2 = tracker.add(new Item("item2"));
         Item item3 = tracker.add(new Item("item2"));
-        assertThat(tracker.findAll(), is(Arrays.asList(new Object[]{item1, item2, item3})));
+        assertThat(tracker.findAll(), is(List.of(item1, item2, item3)));
     }
 
     @Test
@@ -113,7 +114,7 @@ public class SqlTrackerTest {
         Item item2 = tracker.add(new Item("item2"));
         Item item3 = tracker.add(new Item("item3"));
         tracker.delete(item2.getId());
-        assertThat(tracker.findAll(), is(Arrays.asList(new Object[]{item1, item3})));
+        assertThat(tracker.findAll(), is(List.of(item1, item3)));
     }
 
     @Test
@@ -121,6 +122,23 @@ public class SqlTrackerTest {
         SqlTracker tracker = new SqlTracker(connection);
         Item item1 = tracker.add(new Item("item1"));
         tracker.delete(item1.getId());
-        assertThat(tracker.findByName("item1"), is(Arrays.asList(new Object[]{})));
+        assertThat(tracker.findByName("item1"), is(List.of()));
+    }
+
+    @Test
+    public void whenReplaceFindAll() {
+        SqlTracker tracker = new SqlTracker(connection);
+        Item item1 = tracker.add(new Item("item1"));
+        Item item2 = new Item("item2");
+        tracker.replace(item1.getId(), item2);
+        assertThat(tracker.findAll(), is(List.of(item1)));
+    }
+
+    @Test
+    public void whenDeleteFindById() {
+        SqlTracker tracker = new SqlTracker(connection);
+        Item item1 = tracker.add(new Item("item1"));
+        tracker.delete(item1.getId());
+        assertThat(tracker.findById(item1.getId()), is(nullValue()));
     }
 }
