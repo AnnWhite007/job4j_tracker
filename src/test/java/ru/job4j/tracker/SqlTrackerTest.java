@@ -76,7 +76,7 @@ public class SqlTrackerTest {
             statement.execute();
         }
     }
-    @Ignore
+
     @Test
     public void whenSaveItemAndFindByGeneratedIdThenMustBeTheSame() {
         SqlTracker tracker = new SqlTracker(connection);
@@ -84,7 +84,7 @@ public class SqlTrackerTest {
         tracker.add(item);
         assertThat(tracker.findById(item.getId()), is(item));
     }
-    @Ignore
+
     @Test
     public void whenSaveItemAndFindByNameThenMustBeTheSame() {
         SqlTracker tracker = new SqlTracker(connection);
@@ -93,7 +93,7 @@ public class SqlTrackerTest {
         Item item3 = tracker.add(new Item("item2"));
         assertThat(tracker.findByName("item2"), is(List.of(item2, item3)));
     }
-    @Ignore
+
     @Test
     public void whenSaveItemAndFindAllThenMustBeTheSame() {
         SqlTracker tracker = new SqlTracker(connection);
@@ -102,7 +102,7 @@ public class SqlTrackerTest {
         Item item3 = tracker.add(new Item("item2"));
         assertThat(tracker.findAll(), is(List.of(item1, item2, item3)));
     }
-    @Ignore
+
     @Test
     public void whenSaveItemReplaceAndFindAll() {
         SqlTracker tracker = new SqlTracker(connection);
@@ -112,7 +112,7 @@ public class SqlTrackerTest {
         tracker.delete(item2.getId());
         assertThat(tracker.findAll(), is(List.of(item1, item3)));
     }
-    @Ignore
+
     @Test
     public void whenNoFindByName() {
         SqlTracker tracker = new SqlTracker(connection);
@@ -120,7 +120,7 @@ public class SqlTrackerTest {
         tracker.delete(item1.getId());
         assertThat(tracker.findByName("item1"), is(List.of()));
     }
-    @Ignore
+
     @Test
     public void whenReplaceFindAll() {
         SqlTracker tracker = new SqlTracker(connection);
@@ -129,7 +129,7 @@ public class SqlTrackerTest {
         tracker.replace(item1.getId(), item2);
         assertThat(tracker.findById(item1.getId()).getName(), is("item2"));
     }
-    @Ignore
+
     @Test
     public void whenDeleteFindById() {
         SqlTracker tracker = new SqlTracker(connection);
